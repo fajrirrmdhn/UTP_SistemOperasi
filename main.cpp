@@ -5,19 +5,13 @@ using namespace std;
 // 1. FUNGSI FCFS (FIRST COME FIRST SERVED)
 void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     int ct[50], tat[50], wt[50];
-    bool selesai[50];
-    int urutan[50];
-    int start_time[50], end_time[50];
-
-    for (int i = 0; i < n; i++) {
-        selesai[i] = false;
-    }
+    bool selesai[50] = {false};
+    int urutan[50], start_time[50], end_time[50];
 
     int waktu_sekarang = 0;
     int selesai_count = 0;
 
     while (selesai_count < n) {
-        // Cari proses yang sudah tiba (at <= waktu_sekarang) dengan AT paling kecil
         int terpilih = -1;
         int min_at = 999999;
 
@@ -30,7 +24,6 @@ void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             }
         }
 
-        // Jika belum ada proses yang tiba pada waktu_sekarang (CPU Idle)
         if (terpilih == -1) {
             int at_terdekat = 999999;
             for (int i = 0; i < n; i++) {
@@ -42,7 +35,6 @@ void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             continue;
         }
 
-        // Eksekusi proses terpilih
         start_time[selesai_count] = waktu_sekarang;
         waktu_sekarang += bt[terpilih];
         end_time[selesai_count] = waktu_sekarang;
@@ -56,7 +48,6 @@ void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
         selesai_count++;
     }
 
-    // Tampilkan Urutan Eksekusi
     cout << "\n=================================================================\n";
     cout << "           HASIL: FIRST COME FIRST SERVED (FCFS)\n";
     cout << "=================================================================\n";
@@ -68,13 +59,10 @@ void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     }
     cout << "\n\n";
 
-    // Tabel Perhitungan
     cout << "Proses\tAT\tBT\tCT\tTAT\tWT\n";
     cout << "-------------------------------------------------\n";
 
-    float total_wt = 0;
-    float total_tat = 0;
-
+    float total_wt = 0, total_tat = 0;
     for (int i = 0; i < n; i++) {
         cout << "P" << pid[i] << "\t"
              << at[i] << "\t"
@@ -99,19 +87,13 @@ void fcfs(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
 // 2. FUNGSI SJF NON-PREEMPTIVE (SHORTEST JOB FIRST)
 void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     int ct[50], tat[50], wt[50];
-    bool selesai[50];
-    int urutan[50];
-    int start_time[50], end_time[50];
-
-    for (int i = 0; i < n; i++) {
-        selesai[i] = false;
-    }
+    bool selesai[50] = {false};
+    int urutan[50], start_time[50], end_time[50];
 
     int waktu_sekarang = 0;
     int selesai_count = 0;
 
     while (selesai_count < n) {
-        // Cari proses yang sudah tiba dengan Burst Time (BT) terpendek
         int terpilih = -1;
         int min_bt = 999999;
 
@@ -121,7 +103,6 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
                     min_bt = bt[i];
                     terpilih = i;
                 } else if (bt[i] == min_bt) {
-                    // Jika BT sama, pilih yang tiba lebih dulu (AT lebih kecil)
                     if (at[i] < at[terpilih]) {
                         terpilih = i;
                     }
@@ -129,7 +110,6 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             }
         }
 
-        // Jika CPU menganggur
         if (terpilih == -1) {
             int at_terdekat = 999999;
             for (int i = 0; i < n; i++) {
@@ -141,7 +121,6 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             continue;
         }
 
-        // Eksekusi proses terpilih
         start_time[selesai_count] = waktu_sekarang;
         waktu_sekarang += bt[terpilih];
         end_time[selesai_count] = waktu_sekarang;
@@ -155,7 +134,6 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
         selesai_count++;
     }
 
-    // Tampilkan Hasil
     cout << "\n=================================================================\n";
     cout << "     HASIL: SHORTEST JOB FIRST (SJF) NON-PREEMPTIVE\n";
     cout << "=================================================================\n";
@@ -170,9 +148,7 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     cout << "Proses\tAT\tBT\tCT\tTAT\tWT\n";
     cout << "-------------------------------------------------\n";
 
-    float total_wt = 0;
-    float total_tat = 0;
-
+    float total_wt = 0, total_tat = 0;
     for (int i = 0; i < n; i++) {
         cout << "P" << pid[i] << "\t"
              << at[i] << "\t"
@@ -197,13 +173,8 @@ void sjf(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
 // 3. FUNGSI HRRN NON-PREEMPTIVE (HIGHEST RESPONSE RATIO NEXT)
 void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     int ct[50], tat[50], wt[50];
-    bool selesai[50];
-    int urutan[50];
-    int start_time[50], end_time[50];
-
-    for (int i = 0; i < n; i++) {
-        selesai[i] = false;
-    }
+    bool selesai[50] = {false};
+    int urutan[50], start_time[50], end_time[50];
 
     int waktu_sekarang = 0;
     int selesai_count = 0;
@@ -215,7 +186,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     cout << "=================================================================\n";
 
     while (selesai_count < n) {
-        // Cek kandidat yang sudah tiba
         int kandidat_count = 0;
         for (int i = 0; i < n; i++) {
             if (!selesai[i] && at[i] <= waktu_sekarang) {
@@ -223,7 +193,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             }
         }
 
-        // Jika CPU idle
         if (kandidat_count == 0) {
             int at_terdekat = 999999;
             for (int i = 0; i < n; i++) {
@@ -235,7 +204,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
             continue;
         }
 
-        // Cetak tabel perhitungan Response Ratio untuk pemilihan saat ini
         cout << "\n[Langkah #" << langkah << "] Waktu Saat Ini = " << waktu_sekarang << "\n";
         cout << "Proses\tAT\tBT\tWT\tRumus (WT+BT)/BT\tResponse Ratio\n";
         cout << "----------------------------------------------------------------\n";
@@ -263,7 +231,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
         }
         cout << ">> Dipilih: P" << pid[terpilih] << " (RR Tertinggi = " << max_rr << ")\n";
 
-        // Eksekusi proses terpilih
         start_time[selesai_count] = waktu_sekarang;
         waktu_sekarang += bt[terpilih];
         end_time[selesai_count] = waktu_sekarang;
@@ -278,7 +245,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
         langkah++;
     }
 
-    // Tampilkan Hasil HRRN
     cout << "\n=================================================================\n";
     cout << "  HASIL AKHIR: HIGHEST RESPONSE RATIO NEXT (HRRN) NON-PREEMPTIVE\n";
     cout << "=================================================================\n";
@@ -293,9 +259,7 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     cout << "Proses\tAT\tBT\tCT\tTAT\tWT\n";
     cout << "-------------------------------------------------\n";
 
-    float total_wt = 0;
-    float total_tat = 0;
-
+    float total_wt = 0, total_tat = 0;
     for (int i = 0; i < n; i++) {
         cout << "P" << pid[i] << "\t"
              << at[i] << "\t"
@@ -317,7 +281,6 @@ void hrrn(int n, int pid[], int at[], int bt[], float &avg_wt, float &avg_tat) {
     cout << "=================================================================\n";
 }
 
-// 4. FUNGSI UTAMA (MAIN)
 int main() {
     char npm[50] = "2517051041";
     int pid[50], at[50], bt[50];
@@ -328,30 +291,23 @@ int main() {
     cout << "=================================================================\n";
     cout << "NPM: " << npm << endl;
 
-    // Hitung panjang digit NPM
     while (npm[n] != '\0') {
         n++;
     }
 
-    // Ekstraksi data berdasarkan digit NPM
     int max_digit = -1;
     int idx_digit_terbesar = -1;
 
     for (int i = 0; i < n; i++) {
         pid[i] = i + 1;
 
-        // Aturan 1: AT dari depan ke belakang
         at[i] = npm[i] - '0';
-
-        // Aturan 2: BT dari belakang ke depan
         bt[i] = npm[n - 1 - i] - '0';
 
-        // Aturan 3: Jika BT == 0, diubah menjadi 10
         if (bt[i] == 0) {
             bt[i] = 10;
         }
 
-        // Cari digit terbesar untuk Aturan 4
         int digit_saat_ini = npm[i] - '0';
         if (digit_saat_ini > max_digit) {
             max_digit = digit_saat_ini;
@@ -359,12 +315,10 @@ int main() {
         }
     }
 
-    // Aturan 4: AT sebesar 0 untuk proses dengan digit NPM terbesar pertama
     if (idx_digit_terbesar != -1) {
         at[idx_digit_terbesar] = 0;
     }
 
-    // Tampilkan Data Awal
     cout << "\n=================================================================\n";
     cout << "               DATA PROSES DARI DIGIT NPM: " << npm << "\n";
     cout << "=================================================================\n";
@@ -384,17 +338,14 @@ int main() {
     }
     cout << "=================================================================\n";
 
-    // Variabel untuk menyimpan rata-rata tiap algoritma
     float fcfs_wt = 0, fcfs_tat = 0;
     float sjf_wt = 0, sjf_tat = 0;
     float hrrn_wt = 0, hrrn_tat = 0;
 
-    // Panggil 3 Fungsi Algoritma
     fcfs(n, pid, at, bt, fcfs_wt, fcfs_tat);
     sjf(n, pid, at, bt, sjf_wt, sjf_tat);
     hrrn(n, pid, at, bt, hrrn_wt, hrrn_tat);
 
-    // Tampilkan Tabel Perbandingan Akhir
     cout << "\n=================================================================\n";
     cout << "          TABEL PERBANDINGAN RATA-RATA KETIGA ALGORITMA          \n";
     cout << "=================================================================\n";
